@@ -44,8 +44,10 @@ export class APIVideoMetadata {
         if (video.updatedAt) {
             this.updatedAt = new Date(video.updatedAt)
         }
-        if(video.annotations){
-            this.annotations = video.annotations.map(a=> new APIAnnotation(a))
+        if (video.annotations) {
+            this.annotations = video.annotations.map(
+                (a) => new APIAnnotation(a)
+            )
         }
     }
 }
@@ -53,20 +55,26 @@ export class APIVideoMetadata {
 export let VideoMetadataDB: ModelStatic<VideoMetadata>
 
 export const defineVideoMetadata = async () => {
-    const VideoMetadataSQL = SQL.client.define<VideoMetadata>('videoMetadata', {
-        id: {
-            type: DataTypes.STRING,
-            defaultValue: v4,
-            primaryKey: true
+    const VideoMetadataSQL = SQL.client.define<VideoMetadata>(
+        'videoMetadata',
+        {
+            id: {
+                type: DataTypes.STRING,
+                defaultValue: v4,
+                primaryKey: true
+            },
+            createdAt: {
+                type: DataTypes.BIGINT({ length: 20 }),
+                defaultValue: Date.now
+            },
+            updatedAt: DataTypes.BIGINT({ length: 20 }),
+            source: DataTypes.STRING,
+            durationMS: DataTypes.NUMBER
         },
-        createdAt: {
-            type: DataTypes.BIGINT({ length: 20 }),
-            defaultValue: Date.now
-        },
-        updatedAt: DataTypes.BIGINT({ length: 20 }),
-        source: DataTypes.STRING,
-        durationMS: DataTypes.NUMBER
-    })
+        {
+            timestamps: false
+        }
+    )
 
     VideoMetadataDB = VideoMetadataSQL
 

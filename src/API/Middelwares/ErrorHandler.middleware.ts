@@ -7,8 +7,12 @@ export const ErrorHandler = (
     res: Response,
     next: NextFunction
 ): void => {
-    const statusCode = Number(err.code ?? '500')
+    let statusCode = Number(err.code ?? '500')
 
+    if (err.name === 'ValidateError') {
+        statusCode = 400
+        err.message = 'Invalid input'
+    }
     res.status(statusCode).json({
         error: err.message,
         stack: err.stack

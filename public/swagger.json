@@ -19,12 +19,10 @@
 						"type": "string"
 					},
 					"startTime": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					},
 					"endTime": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					},
 					"createdAt": {
 						"type": "string",
@@ -114,13 +112,17 @@
 						"type": "number",
 						"format": "double"
 					},
+					"type": {
+						"type": "string"
+					},
 					"videoId": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"startTime",
-					"endTime"
+					"endTime",
+					"type"
 				],
 				"type": "object",
 				"additionalProperties": true
@@ -134,7 +136,9 @@
 		"license": {
 			"name": "ISC"
 		},
-		"contact": {}
+		"contact": {
+			"name": "Sefi Jantzis"
+		}
 	},
 	"paths": {
 		"/api/videos/{videoId}": {

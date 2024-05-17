@@ -2,6 +2,7 @@ import { isEmpty } from 'lodash'
 import { BadInputError, NotFoundError } from '../Models/Errors'
 import { Dictionary } from '../Models/Index'
 import { VideoCreationPayload, VideoMetadataDB } from '../Models/VideoMetadata'
+import { AnnotationsDB } from '../Models/Annotation'
 
 export class VideosService {
     private static _validateVideoPayload(payload: VideoCreationPayload) {
@@ -26,11 +27,16 @@ export class VideosService {
 
     public static async remove(id: string) {
         await this.get(id)
-        await VideoMetadataDB.destroy({
-            where: {
-                id
-            }
-        })
+        await Promise.all([
+            AnnotationsDB.destroy({
+                where: { videoId: id }
+            }),
+            VideoMetadataDB.destroy({
+                where: {
+                    id
+                }
+            })
+        ])
     }
 
     public static async get(id: string) {

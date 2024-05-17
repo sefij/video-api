@@ -21,8 +21,8 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"string","required":true},
             "videoId": {"dataType":"string","required":true},
             "type": {"dataType":"string","required":true},
-            "startTime": {"dataType":"double","required":true},
-            "endTime": {"dataType":"double","required":true},
+            "startTime": {"dataType":"string","required":true},
+            "endTime": {"dataType":"string","required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "updatedAt": {"dataType":"datetime"},
         },
@@ -61,6 +61,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "startTime": {"dataType":"double","required":true},
             "endTime": {"dataType":"double","required":true},
+            "type": {"dataType":"string","required":true},
             "videoId": {"dataType":"string"},
         },
         "additionalProperties": true,
