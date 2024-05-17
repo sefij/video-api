@@ -1,0 +1,435 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"APIAnnotation": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"videoId": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"startTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"endTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"videoId",
+					"type",
+					"startTime",
+					"endTime",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"APIVideoMetadata": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"source": {
+						"type": "string"
+					},
+					"durationMS": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"annotations": {
+						"items": {
+							"$ref": "#/components/schemas/APIAnnotation"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"source",
+					"durationMS",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"VideoCreationPayload": {
+				"properties": {
+					"source": {
+						"type": "string"
+					},
+					"durationMS": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"source",
+					"durationMS"
+				],
+				"type": "object",
+				"additionalProperties": true
+			},
+			"Dictionary": {
+				"properties": {},
+				"additionalProperties": {},
+				"type": "object"
+			},
+			"AnnotationCreationPayload": {
+				"properties": {
+					"startTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"endTime": {
+						"type": "number",
+						"format": "double"
+					},
+					"videoId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"startTime",
+					"endTime"
+				],
+				"type": "object",
+				"additionalProperties": true
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "papercup",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/api/videos/{videoId}": {
+			"get": {
+				"operationId": "GetVideo",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/APIVideoMetadata"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Videos"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "videoId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteVideo",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Videos"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "videoId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/videos": {
+			"get": {
+				"operationId": "ListVideos",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/APIVideoMetadata"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Videos"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateVideo",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/APIVideoMetadata"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Videos"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VideoCreationPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/videos/{videoId}/annotations/list": {
+			"post": {
+				"operationId": "ListVideoAnnotations",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/APIAnnotation"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Videos",
+					"Annotations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "videoId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Dictionary"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/videos/{videoId}/annotations": {
+			"post": {
+				"operationId": "CreateVideoAnnotation",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/APIAnnotation"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Videos",
+					"Annotations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "videoId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AnnotationCreationPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/videos/{videoId}/annotations/{videoId}": {
+			"delete": {
+				"operationId": "DeleteVideoAnnotations",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"format": "double"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Videos",
+					"Annotations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "videoId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/annotations/{annotationId}": {
+			"get": {
+				"operationId": "GetAnnotation",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/APIAnnotation"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Annotations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "annotationId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteAnnotaion",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"format": "double"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Annotations"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "annotationId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
